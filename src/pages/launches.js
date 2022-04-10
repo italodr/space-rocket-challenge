@@ -21,10 +21,10 @@ import { useSpaceXPaginated } from "../utils/use-space-x";
 import { useLocalStorage } from "../utils/use-localstorage";
 import { formatDate } from "../utils/format-date";
 import { showParticles } from "../utils/particles";
-import Error from "./error";
-import Breadcrumbs from "./breadcrumbs";
-import LoadMoreButton from "./load-more-button";
-import IconStar from './icon-star';
+import Error from "../components/error";
+import Breadcrumbs from "../components/breadcrumbs";
+import LoadMoreButton from "../components/load-more-button";
+import IconStar from '../components/icon-star';
 
 const PAGE_SIZE = 12;
 

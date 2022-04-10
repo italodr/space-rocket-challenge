@@ -2,9 +2,9 @@ import React from "react";
 import { Badge, Box, SimpleGrid, Text } from "@chakra-ui/core";
 import { Link } from "react-router-dom";
 
-import Error from "./error";
-import Breadcrumbs from "./breadcrumbs";
-import LoadMoreButton from "./load-more-button";
+import Error from "../components/error";
+import Breadcrumbs from "../components/breadcrumbs";
+import LoadMoreButton from "../components/load-more-button";
 import { useSpaceXPaginated } from "../utils/use-space-x";
 
 const PAGE_SIZE = 12;
