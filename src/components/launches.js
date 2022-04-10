@@ -187,7 +187,7 @@ export function FavouritesDrawer({ openButtonRef, isOpen, onClose, children }) {
       finalFocusRef={openButtonRef}
     >
       <DrawerOverlay />
-      <DrawerContent>
+      <DrawerContent overflow="auto">
         <DrawerCloseButton />
         <DrawerHeader>
           Favourites
