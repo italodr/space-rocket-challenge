@@ -23,6 +23,7 @@ import { formatDate } from "../utils/format-date";
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import LoadMoreButton from "./load-more-button";
+import IconStar from './icon-star';
 
 const PAGE_SIZE = 12;
 
@@ -39,7 +40,7 @@ export default function Launches() {
   console.log(data, error);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const openButtonRef = useRef()
+  const openButtonRef = useRef();
 
   const handleFavouriteLaunch = (launch) => {
     const filteredFavourites = favourites.filter(item => item.flight_number !== launch.flight_number);
@@ -57,9 +58,23 @@ export default function Launches() {
       <Breadcrumbs
         items={[{ label: "Home", to: "/" }, { label: "Launches" }]}
       />
-      <button ref={openButtonRef} onClick={onOpen}>
-        Favourites ({favourites.length})
-      </button>
+      <Flex
+        align="center"
+        justify="space-between"
+        px="6"
+      >
+        <Box>
+          <Flex
+            as="button"
+            ref={openButtonRef}
+            onClick={onOpen}
+            align="center"
+            justify="space-between"
+          >
+            <IconStar /> Show favourites ({favourites.length})
+          </Flex>
+        </Box>
+      </Flex>
       <SimpleGrid m={[2, null, 6]} minChildWidth="350px" spacing="4">
         {error && <Error />}
         {data &&
@@ -135,7 +150,16 @@ export function LaunchItem({ launch, toggleFavourite }) {
         objectPosition="bottom"
       />
 
-      <Box p="6">
+      <Box px="6" pt="8" pb="6" position="relative">
+        <Box
+          as="button"
+          onClick={toggleFavourite}
+          position="absolute"
+          top="2"
+          right="2"
+        >
+          <IconStar />
+        </Box>
         <Box d="flex" alignItems="baseline">
           {launch.launch_success ? (
             <Badge px="2" variant="solid" variantColor="green">
@@ -165,7 +189,7 @@ export function LaunchItem({ launch, toggleFavourite }) {
           lineHeight="tight"
           isTruncated
         >
-          {launch.mission_name} <button onClick={toggleFavourite}>Favourite</button>
+          {launch.mission_name}
         </Box>
         <Flex>
           <Text fontSize="sm">{formatDate(launch.launch_date_utc)} </Text>
