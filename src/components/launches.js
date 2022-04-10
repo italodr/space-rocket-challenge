@@ -1,5 +1,19 @@
-import React from "react";
-import { Badge, Box, Image, SimpleGrid, Text, Flex } from "@chakra-ui/core";
+import React, { useRef } from "react";
+import {
+  Badge,
+  Box,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  useDisclosure,
+  Image,
+  SimpleGrid,
+  Text,
+  Flex
+} from "@chakra-ui/core";
 import { format as timeAgo } from "timeago.js";
 import { Link } from "react-router-dom";
 
@@ -24,6 +38,9 @@ export default function Launches() {
   );
   console.log(data, error);
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const openButtonRef = useRef()
+
   const handleFavouriteLaunch = (launch) => {
     const filteredFavourites = favourites.filter(item => item.flight_number !== launch.flight_number);
     const launchIsFavourite = favourites.length > filteredFavourites.length;
@@ -40,6 +57,9 @@ export default function Launches() {
       <Breadcrumbs
         items={[{ label: "Home", to: "/" }, { label: "Launches" }]}
       />
+      <button ref={openButtonRef} onClick={onOpen}>
+        Favourites
+      </button>
       <SimpleGrid m={[2, null, 6]} minChildWidth="350px" spacing="4">
         {error && <Error />}
         {data &&
@@ -62,6 +82,13 @@ export default function Launches() {
         pageSize={PAGE_SIZE}
         isLoadingMore={isValidating}
       />
+      <FavouritesDrawer
+        openButtonRef={openButtonRef}
+        isOpen={isOpen}
+        onClose={onClose}
+      >
+        Favourites Content
+      </FavouritesDrawer>
     </div>
   );
 }
@@ -140,4 +167,27 @@ export function LaunchItem({ launch, toggleFavourite }) {
       </Box>
     </Box>
   );
+}
+
+export function FavouritesDrawer({ openButtonRef, isOpen, onClose, children }) {
+  return (
+    <Drawer
+      isOpen={isOpen}
+      placement='right'
+      onClose={onClose}
+      finalFocusRef={openButtonRef}
+    >
+      <DrawerOverlay />
+      <DrawerContent>
+        <DrawerCloseButton />
+        <DrawerHeader>
+          Favourites
+        </DrawerHeader>
+
+        <DrawerBody>
+          {children}
+        </DrawerBody>
+      </DrawerContent>
+    </Drawer>
+  )
 }
