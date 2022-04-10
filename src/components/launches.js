@@ -42,11 +42,11 @@ export default function Launches() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const openButtonRef = useRef();
 
-  const handleFavouriteLaunch = (launch) => {
-    const filteredFavourites = favourites.filter(item => item.flight_number !== launch.flight_number);
-    const launchIsFavourite = favourites.length > filteredFavourites.length;
+  const launchIsFavourite = (launch) => favourites.find(item => item.flight_number === launch.flight_number);
 
-    if (launchIsFavourite) {
+  const handleFavouriteLaunch = (launch) => {
+    if (launchIsFavourite(launch)) {
+      const filteredFavourites = favourites.filter(item => item.flight_number !== launch.flight_number);
       setFavourites(filteredFavourites);
     } else {
       setFavourites([...favourites, launch]);
@@ -83,6 +83,7 @@ export default function Launches() {
             .map((launch) => (
               <LaunchItem
                 launch={launch}
+                isFavourite={launchIsFavourite(launch)}
                 toggleFavourite={(event) => {
                   event.preventDefault();
                   handleFavouriteLaunch(launch)
@@ -105,6 +106,7 @@ export default function Launches() {
         {favourites.map((launch) => (
           <LaunchItem
             launch={launch}
+            isFavourite={true}
             toggleFavourite={(event) => {
               event.preventDefault();
               handleFavouriteLaunch(launch)
@@ -117,7 +119,7 @@ export default function Launches() {
   );
 }
 
-export function LaunchItem({ launch, toggleFavourite }) {
+export function LaunchItem({ launch, toggleFavourite, isFavourite }) {
   return (
     <Box
       as={Link}
@@ -154,6 +156,7 @@ export function LaunchItem({ launch, toggleFavourite }) {
         <Box
           as="button"
           onClick={toggleFavourite}
+          color={isFavourite ? "yellow.400" : "gray.200"}
           position="absolute"
           top="2"
           right="2"
