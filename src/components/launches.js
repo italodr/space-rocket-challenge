@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import { useSpaceXPaginated } from "../utils/use-space-x";
 import { useLocalStorage } from "../utils/use-localstorage";
 import { formatDate } from "../utils/format-date";
+import { showParticles } from "../utils/particles";
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
 import LoadMoreButton from "./load-more-button";
@@ -44,11 +45,14 @@ export default function Launches() {
 
   const launchIsFavourite = (launch) => favourites.find(item => item.flight_number === launch.flight_number);
 
-  const handleFavouriteLaunch = (launch) => {
+  const handleFavouriteLaunch = (event, launch) => {
+    event.preventDefault();
+
     if (launchIsFavourite(launch)) {
       const filteredFavourites = favourites.filter(item => item.flight_number !== launch.flight_number);
       setFavourites(filteredFavourites);
     } else {
+      showParticles(event);
       setFavourites([...favourites, launch]);
     }
   };
@@ -85,8 +89,7 @@ export default function Launches() {
                 launch={launch}
                 isFavourite={launchIsFavourite(launch)}
                 toggleFavourite={(event) => {
-                  event.preventDefault();
-                  handleFavouriteLaunch(launch)
+                  handleFavouriteLaunch(event, launch)
                 }}
                 key={launch.flight_number}
               />
@@ -108,8 +111,7 @@ export default function Launches() {
             launch={launch}
             isFavourite={true}
             toggleFavourite={(event) => {
-              event.preventDefault();
-              handleFavouriteLaunch(launch)
+              handleFavouriteLaunch(event, launch)
             }}
             key={launch.flight_number}
           />
