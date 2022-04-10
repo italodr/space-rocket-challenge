@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import {
-  Badge,
   Box,
   Drawer,
   DrawerBody,
@@ -9,22 +8,18 @@ import {
   DrawerContent,
   DrawerCloseButton,
   useDisclosure,
-  Image,
   SimpleGrid,
-  Text,
   Flex
 } from "@chakra-ui/core";
-import { format as timeAgo } from "timeago.js";
-import { Link } from "react-router-dom";
 
 import { useSpaceXPaginated } from "../utils/use-space-x";
 import { useLocalStorage } from "../utils/use-localstorage";
-import { formatDate } from "../utils/format-date";
 import { showParticles } from "../utils/particles";
 import Error from "../components/error";
 import Breadcrumbs from "../components/breadcrumbs";
 import LoadMoreButton from "../components/load-more-button";
 import IconStar from '../components/icon-star';
+import LaunchCard from '../components/card-launch';
 
 const PAGE_SIZE = 12;
 
@@ -85,7 +80,7 @@ export default function Launches() {
           data
             .flat()
             .map((launch) => (
-              <LaunchItem
+              <LaunchCard
                 launch={launch}
                 isFavourite={launchIsFavourite(launch)}
                 toggleFavourite={(event) => {
@@ -107,13 +102,13 @@ export default function Launches() {
         onClose={onClose}
       >
         {favourites.length ? favourites.map((launch) => (
-          <LaunchItem
+          <LaunchCard
             launch={launch}
-            size="small"
             isFavourite={true}
             toggleFavourite={(event) => {
               handleFavouriteLaunch(event, launch)
             }}
+            size="small"
             key={launch.flight_number}
           />
         )) : (
@@ -124,95 +119,6 @@ export default function Launches() {
         )}
       </FavouritesDrawer>
     </div>
-  );
-}
-
-export function LaunchItem({ launch, toggleFavourite, isFavourite, size = "regular" }) {
-  return (
-    <Box
-      as={Link}
-      to={`/launches/${launch.flight_number.toString()}`}
-      boxShadow="md"
-      borderWidth="1px"
-      rounded="lg"
-      overflow="hidden"
-      position="relative"
-      display="block"
-    >
-      <Image
-        src={
-          launch.links.flickr_images[0]?.replace("_o.jpg", "_z.jpg") ??
-          launch.links.mission_patch_small
-        }
-        alt={`${launch.mission_name} launch`}
-        height={size === "small" ? ["120px"] : ["200px", null, "300px"]}
-        width="100%"
-        objectFit="cover"
-        objectPosition="bottom"
-      />
-
-      {size === "regular"
-        && <Image
-          position="absolute"
-          top="5"
-          right="5"
-          src={launch.links.mission_patch_small}
-          height="75px"
-          objectFit="contain"
-          objectPosition="bottom"
-        />
-      }
-
-      <Box px="6" pt="8" pb="6" position="relative">
-        <Box
-          as="button"
-          onClick={toggleFavourite}
-          color={isFavourite ? "yellow.400" : "gray.200"}
-          position="absolute"
-          top="2"
-          right="2"
-        >
-          <IconStar />
-        </Box>
-        <Box d="flex" alignItems="baseline">
-          {launch.launch_success ? (
-            <Badge px="2" variant="solid" variantColor="green">
-              Successful
-            </Badge>
-          ) : (
-            <Badge px="2" variant="solid" variantColor="red">
-              Failed
-            </Badge>
-          )}
-          <Box
-            color="gray.500"
-            fontWeight="semibold"
-            letterSpacing="wide"
-            fontSize="xs"
-            textTransform="uppercase"
-            ml="2"
-          >
-            {launch.rocket.rocket_name} &bull; {launch.launch_site.site_name}
-          </Box>
-        </Box>
-
-        <Box
-          mt="1"
-          fontWeight="semibold"
-          as="h4"
-          lineHeight="tight"
-          isTruncated
-        >
-          {launch.mission_name}
-        </Box>
-        <Flex>
-          <Text fontSize="sm">{formatDate(launch.launch_date_utc)} </Text>
-          <Text color="gray.500" ml="2" fontSize="sm">
-            {timeAgo(launch.launch_date_utc)}
-          </Text>
-        </Flex>
-      </Box>
-    </Box>
   );
 }
 
