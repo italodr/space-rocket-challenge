@@ -7,8 +7,11 @@ import {
 
 import Card from './card';
 import { formatDate } from "../utils/format-date";
+import { useStateValue } from '../contexts/app-context';
 
 export default function LaunchCard({ launch, ...props }) {
+  const { launchIsFavourite, handleFavouriteLaunch } = useStateValue();
+
   return (
     <Card
       title={launch.mission_name}
@@ -18,6 +21,10 @@ export default function LaunchCard({ launch, ...props }) {
       imageAlt={`${launch.mission_name} launch`}
       badge={launch.launch_success ? "Successful" : "Failed"}
       badgeColor={launch.launch_success ? "green" : "red"}
+      isFavourite={launchIsFavourite(launch)}
+      toggleFavourite={(event) => {
+        handleFavouriteLaunch(event, launch)
+      }}
       {...props}
       key={launch.flight_number}
     >

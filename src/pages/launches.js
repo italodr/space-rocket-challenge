@@ -6,12 +6,10 @@ import Error from "../components/error";
 import Breadcrumbs from "../components/breadcrumbs";
 import LoadMoreButton from "../components/load-more-button";
 import LaunchCard from '../components/card-launch';
-import { useStateValue } from '../contexts/app-context';
 
 const PAGE_SIZE = 12;
 
 export default function Launches() {
-  const { launchIsFavourite, handleFavouriteLaunch } = useStateValue();
   const { data, error, isValidating, setSize, size } = useSpaceXPaginated(
     "/launches/past",
     {
@@ -35,10 +33,6 @@ export default function Launches() {
             .map((launch) => (
               <LaunchCard
                 launch={launch}
-                isFavourite={launchIsFavourite(launch)}
-                toggleFavourite={(event) => {
-                  handleFavouriteLaunch(event, launch)
-                }}
                 key={launch.flight_number}
               />
             ))}

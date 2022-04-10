@@ -48,10 +48,6 @@ export default function FavouritesDrawer() {
             {favourites.length ? favourites.map((launch) => (
               <LaunchCard
                 launch={launch}
-                isFavourite={true}
-                toggleFavourite={(event) => {
-                  handleFavouriteLaunch(event, launch)
-                }}
                 size="small"
                 key={launch.flight_number}
               />
