@@ -88,11 +88,14 @@ export default function Launches() {
         onClose={onClose}
       >
         {favourites.map((launch) => (
-          <div>
-            {launch.flight_number}<br />
-            {launch.rocket.rocket_name}
-            <hr />
-          </div>
+          <LaunchItem
+            launch={launch}
+            toggleFavourite={(event) => {
+              event.preventDefault();
+              handleFavouriteLaunch(launch)
+            }}
+            key={launch.flight_number}
+          />
         ))}
       </FavouritesDrawer>
     </div>
