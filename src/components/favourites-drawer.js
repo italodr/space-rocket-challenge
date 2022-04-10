@@ -15,7 +15,7 @@ import LaunchCard from './card-launch';
 import IconStar from './icon-star';
 
 export default function FavouritesDrawer() {
-  const { favourites, handleFavouriteLaunch } = useStateValue();
+  const { favourites } = useStateValue();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const openButtonRef = useRef();
 
