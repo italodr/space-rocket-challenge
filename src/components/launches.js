@@ -58,7 +58,7 @@ export default function Launches() {
         items={[{ label: "Home", to: "/" }, { label: "Launches" }]}
       />
       <button ref={openButtonRef} onClick={onOpen}>
-        Favourites
+        Favourites ({favourites.length})
       </button>
       <SimpleGrid m={[2, null, 6]} minChildWidth="350px" spacing="4">
         {error && <Error />}
@@ -87,7 +87,13 @@ export default function Launches() {
         isOpen={isOpen}
         onClose={onClose}
       >
-        Favourites Content
+        {favourites.map((launch) => (
+          <div>
+            {launch.flight_number}<br />
+            {launch.rocket.rocket_name}
+            <hr />
+          </div>
+        ))}
       </FavouritesDrawer>
     </div>
   );
