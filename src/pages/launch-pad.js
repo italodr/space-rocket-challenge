@@ -18,9 +18,9 @@ import {
 } from "@chakra-ui/core";
 
 import { useSpaceX } from "../utils/use-space-x";
-import Error from "./error";
-import Breadcrumbs from "./breadcrumbs";
-import { LaunchItem } from "./launches";
+import Error from "../components/error";
+import Breadcrumbs from "../components/breadcrumbs";
+import LaunchCard from '../components/card-launch';
 
 export default function LaunchPad() {
   let { launchPadId } = useParams();
@@ -161,7 +161,7 @@ function RecentLaunches({ launches }) {
       </Text>
       <SimpleGrid minChildWidth="350px" spacing="4">
         {launches.map((launch) => (
-          <LaunchItem launch={launch} key={launch.flight_number} />
+          <LaunchCard launch={launch} key={launch.flight_number} />
         ))}
       </SimpleGrid>
     </Stack>
