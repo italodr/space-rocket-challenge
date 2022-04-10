@@ -4,14 +4,17 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { ThemeProvider, CSSReset } from "@chakra-ui/core";
 
 import App from "./pages/app";
+import { StateProvider } from './contexts/app-context';
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <ThemeProvider>
-        <CSSReset />
-        <App />
-      </ThemeProvider>
+      <StateProvider>
+        <ThemeProvider>
+          <CSSReset />
+          <App />
+        </ThemeProvider>
+      </StateProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById("root")

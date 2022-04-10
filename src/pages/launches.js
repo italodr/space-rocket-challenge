@@ -13,18 +13,18 @@ import {
 } from "@chakra-ui/core";
 
 import { useSpaceXPaginated } from "../utils/use-space-x";
-import { useLocalStorage } from "../utils/use-localstorage";
 import { showParticles } from "../utils/particles";
 import Error from "../components/error";
 import Breadcrumbs from "../components/breadcrumbs";
 import LoadMoreButton from "../components/load-more-button";
 import IconStar from '../components/icon-star';
 import LaunchCard from '../components/card-launch';
+import { useStateValue } from '../contexts/app-context';
 
 const PAGE_SIZE = 12;
 
 export default function Launches() {
-  const [favourites, setFavourites] = useLocalStorage('favourites', []);
+  const { favourites, setFavourites } = useStateValue();
   const { data, error, isValidating, setSize, size } = useSpaceXPaginated(
     "/launches/past",
     {
