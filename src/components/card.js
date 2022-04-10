@@ -5,7 +5,7 @@ import {
   Box,
   Image,
 } from "@chakra-ui/core";
-import IconStar from '../components/icon-star';
+import { Star } from "react-feather";
 
 export default function Card({
   title,
@@ -63,7 +63,7 @@ export default function Card({
           top="2"
           right="2"
         >
-          <IconStar />
+          <Star />
         </Box>}
         <Box d="flex" alignItems="baseline">
           <Badge px="2" variant="solid" variantColor={badgeColor}>

@@ -1,4 +1,5 @@
 import React, { useRef } from "react";
+import { Star } from 'react-feather';
 import {
   Box,
   Flex,
@@ -12,7 +13,6 @@ import {
 } from "@chakra-ui/core";
 import { useStateValue } from '../contexts/app-context';
 import LaunchCard from './card-launch';
-import IconStar from './icon-star';
 
 export default function FavouritesDrawer() {
   const { favourites } = useStateValue();
@@ -28,7 +28,7 @@ export default function FavouritesDrawer() {
         align="center"
         justify="space-between"
       >
-        <IconStar /> My favourites <Box fontSize={13} ml={1}>({favourites.length})</Box>
+        <Star /> My favourites <Box fontSize={13} ml={1}>({favourites.length})</Box>
       </Flex>
       <Drawer
         isOpen={isOpen}
