@@ -4,6 +4,7 @@ import { format as timeAgo } from "timeago.js";
 import { Link } from "react-router-dom";
 
 import { useSpaceXPaginated } from "../utils/use-space-x";
+import { useLocalStorage } from "../utils/use-localstorage";
 import { formatDate } from "../utils/format-date";
 import Error from "./error";
 import Breadcrumbs from "./breadcrumbs";
@@ -12,6 +13,7 @@ import LoadMoreButton from "./load-more-button";
 const PAGE_SIZE = 12;
 
 export default function Launches() {
+  const [favourites, setFavourites] = useLocalStorage('favourites', []);
   const { data, error, isValidating, setSize, size } = useSpaceXPaginated(
     "/launches/past",
     {
@@ -21,6 +23,18 @@ export default function Launches() {
     }
   );
   console.log(data, error);
+
+  const handleFavouriteLaunch = (launch) => {
+    const filteredFavourites = favourites.filter(item => item.flight_number !== launch.flight_number);
+    const launchIsFavourite = favourites.length > filteredFavourites.length;
+
+    if (launchIsFavourite) {
+      setFavourites(filteredFavourites);
+    } else {
+      setFavourites([...favourites, launch]);
+    }
+  };
+
   return (
     <div>
       <Breadcrumbs
@@ -32,7 +46,14 @@ export default function Launches() {
           data
             .flat()
             .map((launch) => (
-              <LaunchItem launch={launch} key={launch.flight_number} />
+              <LaunchItem
+                launch={launch}
+                toggleFavourite={(event) => {
+                  event.preventDefault();
+                  handleFavouriteLaunch(launch)
+                }}
+                key={launch.flight_number}
+              />
             ))}
       </SimpleGrid>
       <LoadMoreButton
@@ -45,7 +66,7 @@ export default function Launches() {
   );
 }
 
-export function LaunchItem({ launch }) {
+export function LaunchItem({ launch, toggleFavourite }) {
   return (
     <Box
       as={Link}
@@ -108,7 +129,7 @@ export function LaunchItem({ launch }) {
           lineHeight="tight"
           isTruncated
         >
-          {launch.mission_name}
+          {launch.mission_name} <button onClick={toggleFavourite}>Favourite</button>
         </Box>
         <Flex>
           <Text fontSize="sm">{formatDate(launch.launch_date_utc)} </Text>
