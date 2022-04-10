@@ -75,7 +75,7 @@ export default function Launches() {
             align="center"
             justify="space-between"
           >
-            <IconStar /> Show favourites ({favourites.length})
+            <IconStar /> My favourites <Box fontSize={13} ml={1}>({favourites.length})</Box>
           </Flex>
         </Box>
       </Flex>
@@ -106,22 +106,28 @@ export default function Launches() {
         isOpen={isOpen}
         onClose={onClose}
       >
-        {favourites.map((launch) => (
+        {favourites.length ? favourites.map((launch) => (
           <LaunchItem
             launch={launch}
+            size="small"
             isFavourite={true}
             toggleFavourite={(event) => {
               handleFavouriteLaunch(event, launch)
             }}
             key={launch.flight_number}
           />
-        ))}
+        )) : (
+          <Box color="gray.400" pt="10" textAlign="center">
+            <Box color="gray.600" fontSize={21} mb="3">You don't have favourites launches yet.</Box>
+            Click on the little stars and show us some love
+          </Box>
+        )}
       </FavouritesDrawer>
     </div>
   );
 }
 
-export function LaunchItem({ launch, toggleFavourite, isFavourite }) {
+export function LaunchItem({ launch, toggleFavourite, isFavourite, size = "regular" }) {
   return (
     <Box
       as={Link}
@@ -131,6 +137,7 @@ export function LaunchItem({ launch, toggleFavourite, isFavourite }) {
       rounded="lg"
       overflow="hidden"
       position="relative"
+      display="block"
     >
       <Image
         src={
@@ -138,21 +145,23 @@ export function LaunchItem({ launch, toggleFavourite, isFavourite }) {
           launch.links.mission_patch_small
         }
         alt={`${launch.mission_name} launch`}
-        height={["200px", null, "300px"]}
+        height={size === "small" ? ["120px"] : ["200px", null, "300px"]}
         width="100%"
         objectFit="cover"
         objectPosition="bottom"
       />
 
-      <Image
-        position="absolute"
-        top="5"
-        right="5"
-        src={launch.links.mission_patch_small}
-        height="75px"
-        objectFit="contain"
-        objectPosition="bottom"
-      />
+      {size === "regular"
+        && <Image
+          position="absolute"
+          top="5"
+          right="5"
+          src={launch.links.mission_patch_small}
+          height="75px"
+          objectFit="contain"
+          objectPosition="bottom"
+        />
+      }
 
       <Box px="6" pt="8" pb="6" position="relative">
         <Box
